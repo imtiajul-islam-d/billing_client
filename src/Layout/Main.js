@@ -7,7 +7,9 @@ const Main = () => {
   return (
     <section>
       <Nav></Nav>
-      <Outlet></Outlet>
+      <section className="min-h-[90vh]">
+        <Outlet></Outlet>
+      </section>
       <Footer></Footer>
     </section>
   );

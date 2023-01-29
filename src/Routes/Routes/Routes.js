@@ -3,6 +3,7 @@ import Main from "../../Layout/Main";
 import Data from "../../Pages/Data/Data";
 import Login from "../../Pages/Login/Login";
 import Registration from "../../Pages/Registration/Registration";
+import PrivetRoute from "../PrivetRoute/PrivetRoute";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +12,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Data></Data>,
+        element: (
+          <PrivetRoute>
+            <Data></Data>
+          </PrivetRoute>
+        ),
       },
       {
         path: "/registration",
