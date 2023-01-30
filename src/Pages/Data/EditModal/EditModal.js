@@ -21,7 +21,7 @@ const EditModal = ({
       phone,
       amount,
     };
-    fetch(`http://localhost:5000/api/update-billing/${editmodalData?._id}`, {
+    fetch(`https://billing-server-mu.vercel.app/api/update-billing/${editmodalData?._id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

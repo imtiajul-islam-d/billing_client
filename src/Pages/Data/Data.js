@@ -24,7 +24,7 @@ const Data = () => {
     queryKey: ["bills", user?.email, pagination],
     queryFn: () =>
       fetch(
-        `http://localhost:5000/api/billing-list?page=${pagination}`
+        `https://billing-server-mu.vercel.app/api/billing-list?page=${pagination}`
         // {
         //   headers: {
         //     authorization: `bearer ${localStorage.getItem("furniture")}`,
@@ -37,23 +37,24 @@ const Data = () => {
     queryKey: ["amount", user?.email, bills],
     queryFn: () =>
       fetch(
-        `http://localhost:5000/api/billing-list/amount`
-        // {
-        //   headers: {
-        //     authorization: `bearer ${localStorage.getItem("")}`,
-        //   },
-        // }
+        `https://billing-server-mu.vercel.app/api/billing-list/amount`,
+        {
+          headers: {
+            authorization: `bearer ${localStorage.getItem("billing_user")}`,
+          },
+        }
       ).then((res) => res.json()),
   });
   let a = 0;
   amount?.data?.map((item) => {
     a = a + parseInt(item.bills.amount);
   });
+  console.log(a)
   // delete bills
   const deleteBills = (id) => {
     const confirm = window.confirm("Confirm delete!");
     if (confirm) {
-      fetch(`http://localhost:5000/api/delete-billing/${id}`, {
+      fetch(`https://billing-server-mu.vercel.app/api/delete-billing/${id}`, {
         method: "DELETE",
       })
         .then((res) => res.json())

@@ -20,7 +20,7 @@ const Modal = ({ setModalData, openModal, setOpenModal, refetch }) => {
       },
       time,
     };
-    fetch("http://localhost:5000/api/add-billing", {
+    fetch("https://billing-server-mu.vercel.app/api/add-billing", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

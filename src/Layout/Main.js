@@ -10,6 +10,7 @@ const Main = () => {
 
   return (
     <section>
+      <Nav></Nav>
       <section className="min-h-[90vh]">
         <Outlet></Outlet>
       </section>

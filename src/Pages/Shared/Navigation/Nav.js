@@ -1,37 +1,35 @@
-import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AUTH_CONTEXT } from "../../../context/AuthProvider";
 
-const Nav = ({amount}) => {
+const Nav = ({ amount }) => {
   const { user, setFetch, logout } = useContext(AUTH_CONTEXT);
   const navigate = useNavigate();
   // fetch amount
- 
 
   // fetch amount
-  const signin = (email, password) => {
-    const user = { email, password };
-    // login(email, password)
-    fetch("http://localhost:5000/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data.data[0]);
-        if (data.status === "success") {
-          localStorage.setItem("billing_user", data.data[0].email);
-          setFetch(true);
-          if (user) {
-            navigate("/");
-          }
-        }
-      });
-  };
+  // const signin = (email, password) => {
+  //   const user = { email, password };
+  //   // login(email, password)
+  //   fetch("https://billing-server-mu.vercel.app/api/login", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(user),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log(data.data[0]);
+  //       if (data.status === "success") {
+  //         localStorage.setItem("billing_user", data.data[0].email);
+  //         setFetch(true);
+  //         if (user) {
+  //           navigate("/");
+  //         }
+  //       }
+  //     });
+  // };
   // logout
   const signout = () => {
     logout();
@@ -55,12 +53,7 @@ const Nav = ({amount}) => {
                 Logout
               </button>
             ) : (
-              <button
-                className="ml-3"
-                onClick={() => signin("imtiajul@gmail.com", 123)}
-              >
-                login
-              </button>
+              <Link to="/login" className="ml-3">login</Link>
             )}
           </div>
         </div>
