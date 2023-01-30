@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AUTH_CONTEXT } from "../../../context/AuthProvider";
 
 const Nav = () => {
-  const { user, setFetch } = useContext(AUTH_CONTEXT);
+  const { user, setFetch, logout } = useContext(AUTH_CONTEXT);
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
@@ -23,11 +23,15 @@ const Nav = () => {
         if (data.status === "success") {
           localStorage.setItem("billing_user", data.data[0].email);
           setFetch(true);
-          if(user){
-            navigate('/')
+          if (user) {
+            navigate("/");
           }
         }
       });
+  };
+  // logout
+  const signout = () => {
+    logout();
   };
   return (
     <div className="border-b-2 border-gray-200">
@@ -38,13 +42,19 @@ const Nav = () => {
               Power-Hack
             </Link>
           </div>
-          <div className="flex-none">Paid total</div>
-          <button
-            className="ml-3"
-            onClick={() => signin("imtiajul@gmail.com", 123)}
-          >
-            login
-          </button>
+          <div className="flex-none mr-3">Paid total</div>
+          <div>
+            {user ? (
+              <button className="border-gray-200 border-2 px-3 py-2 rounded-md" onClick={signout}>Logout</button>
+            ) : (
+              <button
+                className="ml-3"
+                onClick={() => signin("imtiajul@gmail.com", 123)}
+              >
+                login
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
