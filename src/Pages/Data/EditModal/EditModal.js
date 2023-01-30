@@ -1,7 +1,13 @@
 import React from "react";
 import { toast } from "react-hot-toast";
 
-const Modal = ({ setModalData, openModal, setOpenModal, refetch }) => {
+const EditModal = ({
+  setOpenEditModal,
+  openEditModal,
+  refetch,
+  editmodalData,
+}) => {
+  console.log(editmodalData.bills.name);
   const modalData = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -9,19 +15,14 @@ const Modal = ({ setModalData, openModal, setOpenModal, refetch }) => {
     const email = form.email.value;
     const phone = form.phone.value;
     const amount = form.payableamount.value;
-    const d = new Date();
-    const time = d.getTime();
     const data = {
-      bills: {
-        name,
-        email,
-        phone,
-        amount,
-      },
-      time,
+      name,
+      email,
+      phone,
+      amount,
     };
-    fetch("http://localhost:5000/api/add-billing", {
-      method: "POST",
+    fetch(`http://localhost:5000/api/update-billing/${editmodalData?._id}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
@@ -29,20 +30,19 @@ const Modal = ({ setModalData, openModal, setOpenModal, refetch }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        toast.success("Added successfully..");
+        toast.success("Data updated successfully..");
         refetch();
-        setModalData(data);
-        setOpenModal(!openModal);
+        setOpenEditModal(!openEditModal);
       });
   };
   return (
     <div>
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <input type="checkbox" id="editModal" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box relative">
           <label
-            htmlFor="my-modal-3"
-            onClick={() => setOpenModal(!openModal)}
+            htmlFor="editModal"
+            onClick={() => setOpenEditModal(!openEditModal)}
             className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕
@@ -54,6 +54,7 @@ const Modal = ({ setModalData, openModal, setOpenModal, refetch }) => {
                 type="text"
                 name="name"
                 placeholder="Type here"
+                defaultValue={editmodalData?.bills?.name}
                 required
                 className="input input-bordered w-full"
               />
@@ -64,6 +65,7 @@ const Modal = ({ setModalData, openModal, setOpenModal, refetch }) => {
                 name="email"
                 placeholder="Type here"
                 required
+                defaultValue={editmodalData?.bills?.email}
                 className="input input-bordered w-full"
               />
               <br />
@@ -73,6 +75,7 @@ const Modal = ({ setModalData, openModal, setOpenModal, refetch }) => {
                 id="phone"
                 name="phone"
                 placeholder="123-45-678"
+                defaultValue={editmodalData?.bills?.phone}
                 //   pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
                 required
                 className="input input-bordered w-full"
@@ -85,13 +88,14 @@ const Modal = ({ setModalData, openModal, setOpenModal, refetch }) => {
                 name="payableamount"
                 placeholder="123-45-678"
                 required
+                defaultValue={editmodalData?.bills?.amount}
                 className="input input-bordered w-full"
               />
               <br />
               <input
                 className="px-3 py-2 mt-3 border-2 border-gray-300 rounded-md cursor-pointer"
                 type="submit"
-                value="Add bill"
+                value="Update"
               />
             </form>
           </div>
@@ -101,4 +105,4 @@ const Modal = ({ setModalData, openModal, setOpenModal, refetch }) => {
   );
 };
 
-export default Modal;
+export default EditModal;

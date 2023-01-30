@@ -1,12 +1,15 @@
-import React, { useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AUTH_CONTEXT } from "../../../context/AuthProvider";
 
-const Nav = () => {
+const Nav = ({amount}) => {
   const { user, setFetch, logout } = useContext(AUTH_CONTEXT);
-  const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from?.pathname || "/";
+  // fetch amount
+ 
+
+  // fetch amount
   const signin = (email, password) => {
     const user = { email, password };
     // login(email, password)
@@ -42,10 +45,15 @@ const Nav = () => {
               Power-Hack
             </Link>
           </div>
-          <div className="flex-none mr-3">Paid total</div>
+          <div className="flex-none mr-3">Paid total = ${amount}</div>
           <div>
             {user ? (
-              <button className="border-gray-200 border-2 px-3 py-2 rounded-md" onClick={signout}>Logout</button>
+              <button
+                className="border-gray-200 border-2 px-3 py-2 rounded-md"
+                onClick={signout}
+              >
+                Logout
+              </button>
             ) : (
               <button
                 className="ml-3"

@@ -2,7 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 import { AUTH_CONTEXT } from "../../context/AuthProvider";
+import Nav from "../Shared/Navigation/Nav";
 import DataNav from "./DataNav/DataNav";
+import EditModal from "./EditModal/EditModal";
 import Modal from "./Modal/Modal";
 
 const Data = () => {
@@ -10,7 +12,9 @@ const Data = () => {
   const [pagination, setPagination] = useState(0);
   const [modalData, setModalData] = useState(null);
   const [openModal, setOpenModal] = useState(false);
-  console.log(modalData);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [editmodalData, setEditmodalData] = useState({});
+  console.log(editmodalData);
   //   load data
   const {
     isLoading,
@@ -27,6 +31,23 @@ const Data = () => {
         //   },
         // }
       ).then((res) => res.json()),
+  });
+  // fetch total amount
+  const { data: amount } = useQuery({
+    queryKey: ["amount", user?.email, bills],
+    queryFn: () =>
+      fetch(
+        `http://localhost:5000/api/billing-list/amount`
+        // {
+        //   headers: {
+        //     authorization: `bearer ${localStorage.getItem("")}`,
+        //   },
+        // }
+      ).then((res) => res.json()),
+  });
+  let a = 0;
+  amount?.data?.map((item) => {
+    a = a + parseInt(item.bills.amount);
   });
   // delete bills
   const deleteBills = (id) => {
@@ -61,6 +82,7 @@ const Data = () => {
   return (
     <div>
       <div className="border-b-2 border-gray-200 bg-gray-100">
+        <Nav amount={a}></Nav>
         <DataNav setOpenModal={setOpenModal} openModal={openModal}></DataNav>
       </div>
       {/* data loading */}
@@ -95,7 +117,21 @@ const Data = () => {
                     <td>{bill?.bills?.phone}</td>
                     <td>{bill?.bills?.amount}</td>
                     <td>
-                      <button className="btn btn-xs">Edit</button> ||{" "}
+                      <button
+                        onClick={() => {
+                          setOpenEditModal(!openEditModal);
+                        }}
+                        className="btn btn-xs cursor-pointer"
+                      >
+                        <label
+                          onClick={() => setEditmodalData(bill)}
+                          className="cursor-pointer"
+                          htmlFor="editModal"
+                        >
+                          edit
+                        </label>
+                      </button>
+                      ||
                       <button
                         onClick={() => deleteBills(bill?._id)}
                         className="btn btn-xs"
@@ -134,6 +170,14 @@ const Data = () => {
           ></Modal>
         )}
       </div>
+      {openEditModal && (
+        <EditModal
+          refetch={refetch}
+          openEditModal={openEditModal}
+          setOpenEditModal={setOpenEditModal}
+          editmodalData={editmodalData}
+        ></EditModal>
+      )}
     </div>
   );
 };
